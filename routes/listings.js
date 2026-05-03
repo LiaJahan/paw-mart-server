@@ -8,29 +8,26 @@ router.post("/", async (req, res) => {
   try {
     const newListing = await Listing.create(req.body);
     res.status(201).json(newListing);
-  } catch (err) {
+  } catch {
     res.status(500).json({ message: "Failed to create listing" });
   }
 });
 
-// GET (with filter + limit)
+// GET ALL (with filter + limit)
 router.get("/", async (req, res) => {
   try {
     const query = {};
 
-    // filter by email
     if (req.query.email) {
       query.email = req.query.email;
     }
 
-    // filter by category
     if (req.query.category) {
       query.category = req.query.category;
     }
 
     let queryBuilder = Listing.find(query);
 
-    // limit
     if (req.query.limit) {
       queryBuilder = queryBuilder.limit(Number(req.query.limit));
     }
@@ -38,8 +35,23 @@ router.get("/", async (req, res) => {
     const listings = await queryBuilder;
 
     res.json(listings);
-  } catch (err) {
+  } catch {
     res.status(500).json({ message: "Failed to fetch listings" });
+  }
+});
+
+//  GET SINGLE (PLACE HERE)
+router.get("/:id", async (req, res) => {
+  try {
+    const listing = await Listing.findById(req.params.id);
+
+    if (!listing) {
+      return res.status(404).json({ message: "Not found" });
+    }
+
+    res.json(listing);
+  } catch {
+    res.status(500).json({ message: "Failed to fetch listing" });
   }
 });
 
@@ -58,7 +70,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// DELETE (with owner check)
+// DELETE
 router.delete("/:id", async (req, res) => {
   try {
     const { email } = req.query;
