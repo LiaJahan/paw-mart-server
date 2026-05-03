@@ -4,16 +4,31 @@ import Listing from "../models/Listing.js";
 const router = express.Router();
 
 // CREATE
+// router.post("/", async (req, res) => {
+//   try {
+//     const newListing = await Listing.create(req.body);
+//     res.status(201).json(newListing);
+//   } catch (err) {
+//     console.error("CREATE ERROR:", err); // 👈 ADD THIS
+//     res.status(500).json({ error: err.message });
+//   }
+// });
 router.post("/", async (req, res) => {
   try {
+    console.log("BODY RECEIVED:", req.body); // 👈 ADD
+
     const newListing = await Listing.create(req.body);
+
     res.status(201).json(newListing);
   } catch (err) {
-    console.error("CREATE ERROR:", err); // 👈 ADD THIS
-    res.status(500).json({ error: err.message });
+    console.error("CREATE ERROR:", err);
+
+    // 👇 IMPORTANT: send real error to frontend
+    res.status(500).json({
+      message: err.message,
+    });
   }
 });
-
 // GET ALL (with filter + limit)
 router.get("/", async (req, res) => {
   try {
