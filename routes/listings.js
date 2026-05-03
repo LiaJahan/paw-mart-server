@@ -8,7 +8,8 @@ router.post("/", async (req, res) => {
   try {
     const newListing = await Listing.create(req.body);
     res.status(201).json(newListing);
-  } catch {
+  } catch (err) {
+    console.error("CREATE ERROR:", err); // 👈 ADD THIS
     res.status(500).json({ message: "Failed to create listing" });
   }
 });
@@ -35,12 +36,13 @@ router.get("/", async (req, res) => {
     const listings = await queryBuilder;
 
     res.json(listings);
-  } catch {
+  } catch (err) {
+    console.error("GET LISTINGS ERROR:", err); // 👈 CRITICAL
     res.status(500).json({ message: "Failed to fetch listings" });
   }
 });
 
-//  GET SINGLE (PLACE HERE)
+// GET SINGLE
 router.get("/:id", async (req, res) => {
   try {
     const listing = await Listing.findById(req.params.id);
@@ -50,7 +52,8 @@ router.get("/:id", async (req, res) => {
     }
 
     res.json(listing);
-  } catch {
+  } catch (err) {
+    console.error("GET SINGLE ERROR:", err); // 👈 ADD THIS
     res.status(500).json({ message: "Failed to fetch listing" });
   }
 });
@@ -65,7 +68,8 @@ router.put("/:id", async (req, res) => {
     );
 
     res.json(updated);
-  } catch {
+  } catch (err) {
+    console.error("UPDATE ERROR:", err); // 👈 ADD THIS
     res.status(500).json({ message: "Update failed" });
   }
 });
@@ -88,7 +92,8 @@ router.delete("/:id", async (req, res) => {
     await Listing.findByIdAndDelete(req.params.id);
 
     res.json({ message: "Deleted" });
-  } catch {
+  } catch (err) {
+    console.error("DELETE ERROR:", err); // 👈 ADD THIS
     res.status(500).json({ message: "Delete failed" });
   }
 });
