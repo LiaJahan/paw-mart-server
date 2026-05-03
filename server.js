@@ -10,7 +10,17 @@ import ordersRouter from "./routes/orders.js";
 
 const app = express();
 
-app.use(cors());
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://paw-mart-client-five.vercel.app",
+    ],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 app.use("/orders", ordersRouter);
