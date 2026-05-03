@@ -52,9 +52,12 @@ router.get("/", async (req, res) => {
 
     res.json(listings);
   } catch (err) {
-    console.error("GET LISTINGS ERROR:", err); // 👈 CRITICAL
-    res.status(500).json({ message: "Failed to fetch listings" });
-  }
+  console.error("GET LISTINGS ERROR:", err);
+
+  res.status(500).json({
+    message: err.message, // 👈 show real error
+  });
+}
 });
 
 // GET SINGLE
