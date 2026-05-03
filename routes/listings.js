@@ -10,7 +10,7 @@ router.post("/", async (req, res) => {
     res.status(201).json(newListing);
   } catch (err) {
     console.error("CREATE ERROR:", err); // 👈 ADD THIS
-    res.status(500).json({ message: "Failed to create listing" });
+    res.status(500).json({ error: err.message });
   }
 });
 
